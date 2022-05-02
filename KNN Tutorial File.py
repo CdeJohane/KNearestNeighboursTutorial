@@ -23,7 +23,26 @@ predict = "class"
 
 # Whats our X and Y
 Y = list(cls)
-X = list(zip(buying, maint,door, persons, lug_boot,safety))
+X = list(zip(buying, maint,door, persons, lug_boot, safety))
 
 # Split into 4 variables
 x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, Y, test_size=0.1)
+
+# Create a classifier(Number of Neighbours must be odd)
+model = KNeighborsClassifier(n_neighbors=9)
+
+model.fit(x_train,y_train)
+acc = model.score(x_test, y_test)
+print("Accuracy is ", acc)
+
+#To predict and make comparisons
+predicted = model.predict(x_test)
+names = ["unacc", "acc", "good", "vgood"]
+
+for x in range(len(predicted)):
+    print("Predicted: ", names[predicted[x]])
+    print("Data: ", x_test[x])
+    print("Actual: ", names[y_test[x]])
+    n = model.kneighbors([x_test[x]], 9, True)
+    print ("N: ",n)
+    print("")
